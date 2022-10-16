@@ -16,6 +16,9 @@ const login = async (req, res) => {
     if (!passwordCompare) {
         throw RequestError(401, 'password not found')
     }
+    if (!user.verify) {
+        throw RequestError(400, "Email not verify")
+    }
     const payload = {id: user._id}
     const token = jwt.sign(payload, SECRET_KEY);
     await User.findByIdAndUpdate(user._id, {token})
